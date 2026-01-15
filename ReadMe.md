@@ -60,11 +60,11 @@ It consists of two types of nodes:
 
 -------------------------------------------------------------------------
 
-In this tutorial we implement a 2-3 search tree code including its main algorithms:
+In this tutorial we use vibe coding to implement and test a 2-3 search tree code including its main algorithms:
     - search a key
     - insert a key/value
   
-The code should be developed gradually, and in parallel in another script, the test cases should be developed gradually to verify the code so far 
+The code should be developed gradually with vibe coding (using at least 2 AI vendors such as OpenAI Codex and Github Copilot), and in parallel the test cases should be developed gradually to verify the code so far. 
 
 
 - source code: https://github.com/peymanbarca/coen448-tree-algorithm
@@ -75,15 +75,25 @@ The code should be developed gradually, and in parallel in another script, the t
 
   - 1. Environment & Integration Setup
   To implement this with GitHub Copilot (or Codex), VS Code, and GitHub, follow this structured workflow.
-    https://developers.openai.com/codex/ide/
+    
+    - https://developers.openai.com/codex/ide/
+    - https://code.visualstudio.com/docs/copilot/setup
 
   - GitHub Integration: Initialize a local repository in VS Code, create a .gitignore for Java/Python, and link it to a new GitHub repository using the Source Control tab.
 
   - Copilot/Codex extensions should be installed in VS Code and activated (by login)
 
+
+## Vibe coding:
+In each step of development and testing, you should use github copilot and/or codex for vibe coding, by using the same prompt first for development of the tree code to fulfill goals on that step, then generate the test case to verify the tree code so far.
+
 ## Step 1 — Skeleton & empty-get
 
-- Goal: confirm tree and get() handle empty state.
+- Goal: tree supports empty state and get() method returns None on empty tree,
+and confirm the tree and get() method handle empty state.
+- ### Prompt:
+        ...
+
 - Generate first test case (creates a tree and queries empty key):
     
         cd gradual_development
@@ -96,30 +106,55 @@ The code should be developed gradually, and in parallel in another script, the t
 
 - Goal: implement root creation in TwoThreeTree.put and verify retrieval.
 
+- ### Prompt:
+        ...
+
+- Generate second test case
+ 
         pytest 2_3_tree_step2.py
 
 ## Step 3 — Leaf 2-node -> 3-node (ordering)
 
 - Goal: inserting a second key into a leaf preserves key order and both values are reachable.
 
+- ### Prompt:
+        ...
+
+- Generate 3rd test case
+        
         pytest 2_3_tree_step3.py
 
 ## Step 4 — Leaf split & root promotion
 
 - Goal: when a leaf becomes a temporary 4-node, split it and promote middle key to become root.
 
+- ### Prompt:
+        ...
+
+- Generate 4th test case
+        
         pytest 2_3_tree_step4.py
 
 ## Step 5 — Internal promotions & multi-level splits
 
 - Goal: ensure promotions propagate upward (internal node insertions) and root splitting increases height. Use the sequence from 2_3_insertion.md as a deterministic example.
 
+- ### Prompt:
+        ...
+
+- Generate 5th test case
+        
         pytest 2_3_tree_step5.py
 
 ## Step 6 — Update existing key & edge cases
 
 Goal: ensure duplicate-key puts update values instead of inserting duplicates.
 
+- ### Prompt:
+        ...
+
+- Generate and run 6th test case
+        
         pytest 2_3_tree_step6.py
 
 ## Step 7 — Randomized validation vs dict
@@ -127,6 +162,11 @@ Goal: ensure duplicate-key puts update values instead of inserting duplicates.
 - Perform many inserts and compare gets against a Python dict.
 - Perform many inserts and search for each one, and check the value 
 
+- ### Prompt:
+        ...
+
+- Generate and run 7th test case
+        
         pytest 2_3_tree_step7.py
 
 
