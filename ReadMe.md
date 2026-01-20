@@ -3,64 +3,112 @@
 You can learn the main structure and algorithms of it here:
 https://algs4.cs.princeton.edu/33balanced/
 
-
-## What is a 2-3 Search Tree?
-
-A 2-3 search tree is a balanced search tree designed to overcome the performance issues of standard Binary Search Trees (BSTs) by ensuring logarithmic height regardless of the order of insertion.
-
-It consists of two types of nodes:
-
-- 2-node: Contains one key and two links (left and right). Keys in the left subtree are smaller than the node's key; keys in the right subtree are larger.
-
-- 3-node: Contains two keys and three links (left, middle, and right).
-
-    - Left link: Keys smaller than the first key.
-
-    - Middle link: Keys between the first and second keys.
-
-    - Right link: Keys larger than the second key.
-
-- Perfect Balance: A key property of a 2-3 tree is that it is perfectly balanced, meaning every path from the root to a null link (leaf) has the exact same length.
-
-## Algorithms
-  
-  - ### 1. Search: Searching in a 2-3 tree is a generalization of searching in a BST:
-
-    - Compare the search key against the key(s) in the current node.
-
-    - If it matches any key, the search is a hit.
-
-    - If it doesn't match, follow the link corresponding to the interval containing the search key:
-
-        - In a 2-node: Left if smaller, right if larger.
-
-        - In a 3-node: Left if smaller than the first key, middle if between the keys, right if larger than the second key.
-
-    - Repeat recursively until a hit is found or a null link is reached (a miss).
-
-
-  - ### 2. Insertion (Maintaining Balance)
-      Unlike standard BSTs which grow downward, 2-3 trees grow upward. Insertion always starts by searching for the key and reaching a node at the bottom.
-
-      - Insert into a 2-node: If the search ends at a 2-node, simply convert it into a 3-node by adding the new key. No change in tree height occurs.
-
-      - Insert into a 3-node: If the search ends at a 3-node, there is no room for a third key. The algorithm handles this by:
-
-          - Creating a temporary 4-node: Temporarily hold three keys in the node.
-
-          - Splitting the 4-node: The middle key is moved up to the parent node, and the remaining two keys become two separate 2-nodes (children of the moved middle key).
-
-  - Propagating the Split:
-
-      - If the parent was a 2-node, it becomes a 3-node, and the process stops.
-
-      - If the parent was also a 3-node, it becomes a temporary 4-node, and the split process continues up the tree toward the root.
-
-  - Splitting the Root: If the split reaches the root and the root is a 3-node, it splits into three 2-nodes. This is the only way the tree increases in height, ensuring balance is maintained globally.
+More details are available in 2_3_search_tree.md
 
 -------------------------------------------------------------------------
 
-In this tutorial we use vibe coding to implement and test a 2-3 search tree code including its main algorithms:
+# Vibe-coding Dev → QA Test & Review Workflow 
+
+### Goal
+- Develop the 2-3 tree implementation gradually in small, testable iterations.
+- Every two development steps, push code to `dev` branch and create a pull request.
+- QA role pulls `dev`, writes/tests additional pytest cases using vibe-coding (Copilot + Codex), runs tests, fixes code if needed, and merges the validated changes into the `main` branch.
+
+### Branching strategy
+- main (protected) — only merged release-quality code and direct code push will not be accepted by developers.
+- dev — integration branch for every two development steps pushed by developer.
+
+### Roles & responsibilities
+- Developer
+  - Implement Steps N and N+1 locally (follow step-by-step plan).
+  - Run local unit tests for those steps.
+  - Push changes to `dev` every two steps, and create a pull request (to be merged with main branch by QA role).
+- QA
+  - Pull `dev`, create a `qa/stepN-N+1` branch.
+  - Use vibe-coding (Copilot + Codex) to generate/extend tests and to propose fixes for the main code.
+  - Run tests, fix failing behavior (in code or tests) and iterate.
+  - Once all test passed and finalized code review, merge to `main` with optional tag.
+
+
+### Quick checklist (every two steps)
+- [ ] Developer implements steps N & N+1 locally in `dev` branch
+- [ ] Developer runs step-level tests locally
+- [ ] Developer pushes changes to `dev`
+- [ ] QA pulls `dev`
+- [ ] QA writes tests using vibe-coding, runs them
+- [ ] QA fixes code or tests until all targeted tests pass
+- [ ] QA merges fixes back into `dev` and merge it with `main` branch
+
+
+### Developer workflow (commands)
+1. Implement two steps locally (in dev branch) and run local tests:
+   - git checkout -b dev               # or update existing dev
+   - git pull
+   - Edit code in VS Code.
+   - Run targeted tests:
+     - cd gradual_development
+     - pytest -v 2_3_tree_stepN.py  # run the step tests that has beed modified or developed
+2. Commit & push to dev:
+   - git pull
+   - git add .
+   - git commit -m "dev: steps N-N+1 - <short description>"
+   - git push origin dev
+
+### QA workflow (commands)
+1. Pull dev branch:
+   - git checkout -b dev
+   - git pull
+
+2. Develop tests with vibe-coding:
+   - Use the COSTAR-styled prompts (see "Vibe prompts" below) for both code and tests.
+   - Generate or edit tests under gradual_development/ (e.g., 2_3_tree_stepN+1.py).
+3. Run tests:
+   - cd gradual_development
+   - pytest -v 2_3_tree_stepN.py 
+   - pytest -v 2_3_tree_stepN+1.py
+4. Fix issues:
+   - If tests reveal bugs, implement small fixes locally, continue until all issues fixed and all tests passed
+5. if approved, QA can update `dev` directly (team policy dependent).
+   - Commit fixes on `dev`:
+     - git add .
+     - git commit -m "qa: fix step N-N+1 - <short>"
+     - git push origin dev
+
+6. Merge with main branch after test and review.
+   - git checkout -b dev
+   - git pull
+   - git merge dev
+   - git push origin main
+
+
+### Vibe-coding prompts (usage pattern)
+- Use COSTAR-style prompts for test generation (concise, structured).
+- Example short template for test generation:
+  - Context: repo path, target step, constraints (fast, deterministic).
+  - Outcome: single pytest file name and explicit asserts.
+  - Steps: import module (importlib), create tree, perform inserts/gets, assert.
+- Use the exact prompts from the Step-by-step COSTAR prompts in this repo.
+
+### Test-writing guidelines
+- Keep each step test minimal and fast (single assert block for that step).
+- Use importlib to load the latest code under test to avoid stale imports:
+  - Example: use importlib.util.spec_from_file_location to load ../2_3_tree.py
+- Name tests exactly as `test_*` and files `2_3_tree_stepN.py`.
+
+
+
+### Notes and best practices
+- Keep commits small and focused per two-step change set.
+- Track failing tests and root cause; prefer small fixes over large rewrites.
+
+
+
+
+--------------------------------------------------------------------------
+
+# Gradual Development of 2-3 search tree
+
+In this tutorial we use vibe coding to implement and test a 2-3 search tree code gradually including its main algorithms:
     - search a key
     - insert a key/value
   
