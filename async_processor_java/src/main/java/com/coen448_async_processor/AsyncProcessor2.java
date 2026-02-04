@@ -7,7 +7,7 @@ import java.util.stream.Collectors;
 /**
  * AsyncProcessor: three exception-handling strategies for concurrent microservice calls.
  */
-public class AsyncProcessor {
+public class AsyncProcessor2 {
 
     /**
      * Task A: Fail-Fast Strategy
