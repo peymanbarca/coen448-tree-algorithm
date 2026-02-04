@@ -10,13 +10,13 @@ import java.util.concurrent.ExecutionException;
 import static org.junit.jupiter.api.Assertions.*;
 
 @DisplayName("AsyncProcessor - Exception Handling Strategies")
-public class AsyncProcessorTest {
+public class AsyncProcessor2Test {
 
-    private AsyncProcessor processor;
+    private AsyncProcessor2 processor;
 
     @BeforeEach
     void setUp() {
-        processor = new AsyncProcessor();
+        processor = new AsyncProcessor2();
     }
 
     // ============================================================
@@ -26,7 +26,7 @@ public class AsyncProcessorTest {
     @Test
     @DisplayName("Task A.1: FailFast - All services succeed, result aggregated")
     void testFailFastAllSuccess() throws ExecutionException, InterruptedException {
-        List<Microservice> services = List.of(
+        List<Microservice2> services = List.of(
                 mockService("result-1"),
                 mockService("result-2"),
                 mockService("result-3")
@@ -46,7 +46,7 @@ public class AsyncProcessorTest {
     @Test
     @DisplayName("Task A.2: FailFast - First service fails, exception propagates")
     void testFailFastFirstServiceFails() {
-        List<Microservice> services = List.of(
+        List<Microservice2> services = List.of(
                 mockServiceWithException("Service-1 error"),
                 mockService("result-2"),
                 mockService("result-3")
@@ -64,7 +64,7 @@ public class AsyncProcessorTest {
     @Test
     @DisplayName("Task A.3: FailFast - Middle service fails, no partial results")
     void testFailFastMiddleServiceFails() {
-        List<Microservice> services = List.of(
+        List<Microservice2> services = List.of(
                 mockService("result-1"),
                 mockServiceWithException("Service-2 error"),
                 mockService("result-3")
@@ -80,7 +80,7 @@ public class AsyncProcessorTest {
     @Test
     @DisplayName("Task A.4: FailFast - Size mismatch throws IllegalArgumentException")
     void testFailFastSizeMismatch() {
-        List<Microservice> services = List.of(
+        List<Microservice2> services = List.of(
                 mockService("result-1"),
                 mockService("result-2")
         );
@@ -99,7 +99,7 @@ public class AsyncProcessorTest {
     @Test
     @DisplayName("Task B.1: FailPartial - All services succeed, all results returned")
     void testFailPartialAllSuccess() throws ExecutionException, InterruptedException {
-        List<Microservice> services = List.of(
+        List<Microservice2> services = List.of(
                 mockService("result-1"),
                 mockService("result-2"),
                 mockService("result-3")
@@ -119,7 +119,7 @@ public class AsyncProcessorTest {
     @Test
     @DisplayName("Task B.2: FailPartial - First service fails, partial results returned")
     void testFailPartialFirstServiceFails() throws ExecutionException, InterruptedException {
-        List<Microservice> services = List.of(
+        List<Microservice2> services = List.of(
                 mockServiceWithException("Service-1 error"),
                 mockService("result-2"),
                 mockService("result-3")
@@ -140,7 +140,7 @@ public class AsyncProcessorTest {
     @Test
     @DisplayName("Task B.3: FailPartial - All services fail, empty list returned")
     void testFailPartialAllServicesFail() throws ExecutionException, InterruptedException {
-        List<Microservice> services = List.of(
+        List<Microservice2> services = List.of(
                 mockServiceWithException("Service-1 error"),
                 mockServiceWithException("Service-2 error"),
                 mockServiceWithException("Service-3 error")
@@ -159,7 +159,7 @@ public class AsyncProcessorTest {
     @Test
     @DisplayName("Task B.4: FailPartial - No exception escapes to caller")
     void testFailPartialNoExceptionEscape() {
-        List<Microservice> services = List.of(
+        List<Microservice2> services = List.of(
                 mockServiceWithException("Service-1 error"),
                 mockService("result-2")
         );
@@ -182,7 +182,7 @@ public class AsyncProcessorTest {
     @Test
     @DisplayName("Task C.1: FailSoft - All services succeed, result aggregated")
     void testFailSoftAllSuccess() throws ExecutionException, InterruptedException {
-        List<Microservice> services = List.of(
+        List<Microservice2> services = List.of(
                 mockService("result-1"),
                 mockService("result-2"),
                 mockService("result-3")
@@ -203,7 +203,7 @@ public class AsyncProcessorTest {
     @Test
     @DisplayName("Task C.2: FailSoft - First service fails, fallback returned")
     void testFailSoftFirstServiceFails() throws ExecutionException, InterruptedException {
-        List<Microservice> services = List.of(
+        List<Microservice2> services = List.of(
                 mockServiceWithException("Service-1 error"),
                 mockService("result-2"),
                 mockService("result-3")
@@ -222,7 +222,7 @@ public class AsyncProcessorTest {
     @Test
     @DisplayName("Task C.3: FailSoft - Middle service fails, fallback returned")
     void testFailSoftMiddleServiceFails() throws ExecutionException, InterruptedException {
-        List<Microservice> services = List.of(
+        List<Microservice2> services = List.of(
                 mockService("result-1"),
                 mockServiceWithException("Service-2 error"),
                 mockService("result-3")
@@ -239,7 +239,7 @@ public class AsyncProcessorTest {
     @Test
     @DisplayName("Task C.4: FailSoft - No exception escapes, caller always gets result")
     void testFailSoftNoExceptionEscape() {
-        List<Microservice> services = List.of(
+        List<Microservice2> services = List.of(
                 mockServiceWithException("Service-1 error"),
                 mockServiceWithException("Service-2 error")
         );
@@ -258,7 +258,7 @@ public class AsyncProcessorTest {
     @Test
     @DisplayName("Task C.5: FailSoft - Custom fallback values")
     void testFailSoftCustomFallback() throws ExecutionException, InterruptedException {
-        List<Microservice> services = List.of(
+        List<Microservice2> services = List.of(
                 mockServiceWithException("Error")
         );
         List<String> messages = List.of("msg-1");
@@ -277,14 +277,14 @@ public class AsyncProcessorTest {
     /**
      * Create a mock service that succeeds with given result.
      */
-    private Microservice mockService(String result) {
+    private Microservice2 mockService(String result) {
         return query -> CompletableFuture.completedFuture(result);
     }
 
     /**
      * Create a mock service that fails with given exception message.
      */
-    private Microservice mockServiceWithException(String errorMessage) {
+    private Microservice2 mockServiceWithException(String errorMessage) {
         return query -> CompletableFuture.failedFuture(
                 new RuntimeException(errorMessage)
         );

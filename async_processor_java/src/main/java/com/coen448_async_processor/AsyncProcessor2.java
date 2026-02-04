@@ -13,7 +13,7 @@ public class AsyncProcessor2 {
      * Task A: Fail-Fast Strategy
      */
     public CompletableFuture<String> processAsyncFailFast(
-            List<Microservice> microservices,
+            List<Microservice2> microservices,
             List<String> messages) {
         
         if (microservices.size() != messages.size()) {
@@ -43,7 +43,7 @@ public class AsyncProcessor2 {
      * Task B: Fail-Partial Strategy
      */
     public CompletableFuture<List<String>> processAsyncFailPartial(
-            List<Microservice> microservices,
+            List<Microservice2> microservices,
             List<String> messages) {
         
         if (microservices.size() != messages.size()) {
@@ -79,7 +79,7 @@ public class AsyncProcessor2 {
      * Task C: Fail-Soft Strategy
      */
     public CompletableFuture<String> processAsyncFailSoft(
-            List<Microservice> microservices,
+            List<Microservice2> microservices,
             List<String> messages,
             String fallbackValue) {
         
@@ -114,6 +114,6 @@ public class AsyncProcessor2 {
 /**
  * Microservice interface: represents a remote async service.
  */
-interface Microservice {
+interface Microservice2 {
     CompletableFuture<String> retrieveAsync(String query);
 }
