@@ -1,0 +1,7 @@
+TestID,GraphSize,EdgePresence,GraphStructure,CyclePresence,SelfLoops,NodeIndexValidity,NullInput,Expected,Description,GraphJSON
+BCC-01,Empty,NoEdges,SingleNode,NoCycles,No,Valid,NonNull,true,Base case: empty graph,[]
+BCC-02,Small,SomeEdges,Connected,EvenCycle,No,Valid,NonNull,true,Base case: bipartite,[[1,3],[0,2],[1,3],[0,2]]
+BCC-03,Small,SomeEdges,Connected,OddCycle,No,Valid,NonNull,false,Base case: non-bipartite,[[1,2],[0,2],[0,1]]
+BCC-04,Small,SomeEdges,Connected,NoCycles,Yes,Valid,NonNull,false,Base case: self-loop,[[0]]
+BCC-05,Small,SomeEdges,Connected,NoCycles,No,Invalid,NonNull,Exception,Base case: invalid index,[[10],[0]]
+BCC-06,Small,NoEdges,SingleNode,NoCycles,No,Valid,Null,Exception,Base case: null input,null
