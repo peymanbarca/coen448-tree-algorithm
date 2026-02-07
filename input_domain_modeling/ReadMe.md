@@ -30,34 +30,13 @@
 # 2) Input Domain Modeling (IDM) Table
 Program Characteristics & Block Values
 
-┌─────────────────────────────────────────────────────────────────────────────┐
-│                   INPUT DOMAIN MODELING TABLE                               │
-├─────────────────────────────────────────────────────────────────────────────┤
-│ Characteristic              │ Block 1        │ Block 2        │ Block 3     │
-├─────────────────────────────────────────────────────────────────────────────┤
-│ 1. Graph Size (Interface)   │ Empty (0)      │ Small (1-5)    │ Large (>5)  │
-├─────────────────────────────────────────────────────────────────────────────┤
-│ 2. Edge Presence            │ No edges       │ Some edges     │ Complete    │
-│    (Functionality)          │ (all [])       │ (sparse)       │ graph       │
-├─────────────────────────────────────────────────────────────────────────────┤
-│ 3. Graph Structure          │ Connected      │ Disconnected   │ Single node │
-│    (Functionality)          │                │                │             │
-├─────────────────────────────────────────────────────────────────────────────┤
-│ 4. Cycle Presence           │ No cycles      │ Even cycle     │ Odd cycle   │
-│    (Functionality)          │ (DAG/tree)     │ (bipartite)    │ (non-bipart)│
-├─────────────────────────────────────────────────────────────────────────────┤
-│ 5. Self-loops               │ No self-loops  │ With self-loop │            │
-│    (Functionality)          │                │                │            │
-├─────────────────────────────────────────────────────────────────────────────┤
-│ 6. Node Index Validity      │ Valid indices  │ Invalid indices│            │
-│    (Functionality)          │ [0, n)         │ (negative,OOB) │            │
-├─────────────────────────────────────────────────────────────────────────────┤
-│ 7. Null Input               │ Non-null graph │ Null graph     │ Null edges  │
-│    (Interface)              │                │                │ list        │
-└─────────────────────────────────────────────────────────────────────────────┘
 
+![table](idm-table.png)
 
-#  Each Choice Coverage (ECC)
+![table](ecc-vs-bcc.png)
+
+#  Each Choice Coverage (ECC) Comprehensive (test all possibilities)
+
    
 ECC Test Cases Details
 
@@ -105,7 +84,7 @@ int[][] graph10 = null;
 int[][] graph11 = {{1}, null, {0}};
 // Expected: NullPointerException
 
-# Basic Choice Coverage (BCC) 
+# Basic Choice Coverage (BCC) Concise (test essentials only)
 
 BCC Test Cases Details
 
